@@ -1,0 +1,31 @@
+{%extends "OTobjects/base.html"%}
+{%load staticfiles%}
+
+{%block css%}
+   body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
+   .label{position:fixed;top:40%;left:15px;width:7%;background:#303439;}
+   .label ul{position:relative;left:-48px;}
+   .label li{list-style-type:none;padding:8px;width:50px;}
+   .label ul li a{display:block;text-decoration:none;font-weight:bold;color:white;text-align:left;width:90px;padding:5px;}
+   <!--.label ul li a:visited{background:#20B2AA;}-->
+   .label ul li a:hover{background:#5b6571;}
+
+{%endblock%}
+
+{%block content%}
+<!--left frame-->
+<div style="float:left;width:10%;background:red;">
+  <div id='label' class='label'>
+    <ul>
+      <li><a href='./index=lc' target="image">LightCurve</a></li>
+      <li><a href='./index=fchart' target="image">Fchart</a></li>
+    </ul>
+  </div>
+</div>
+<!--right frame-->
+<div style="float:right;position:relative;width:90%;">
+  <iframe src="./index=lc" name="image" style="width:100%;height:100%;" frameborder="0"></iframe>
+
+</div>
+
+{%endblock%}

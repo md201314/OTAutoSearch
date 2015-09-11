@@ -1,0 +1,41 @@
+{%extends "OTobjects/base.html"%}
+
+{%block css%}
+   .lc{position:relative;left:50px;height:400px;width:70%;}
+{%endblock%}
+
+{%block content%}
+<div id='lc' class='lc'>
+  <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+  <script type="text/javascript">
+    require.config({
+        paths:{
+               echarts: 'http://echarts.baidu.com/build/dist'
+              }
+    });
+    require(
+        ['echarts','echarts/chart/line','echarts/chart/scatter'],
+        function(ec){
+            var myChart = ec.init(document.getElementById('lc'));
+            var option={
+                 title:{text:'Light Curve',subtext:'*HJD=JD-{{jdc}}*',subtextStyle:{color:'red'},x:'center'},
+                 <!--legend:{data:['Magnitude--Julian day']},-->
+                 toolbox:{show:true,feature:{dataZoom:{show:true},dataView:{show:true,readOnly:false},restore:{show:true},saveAsImage:{show:true}}},
+                 calculable:true,
+                 tooltip:{trigger:'axis',showDelay:0,axisPointer:{show:true,type:'cross',lineStyle:{type:'dashed',width:1}},formatter:"HJD-Mag :<br/>{c}"},
+                 <!--dataZoom:{show:true,realtime:true,start:0,end:100},-->
+                 /*
+		 xAxis:[{type:'value',axisLabel:{formatter:'{value}'},name:'HJD'}],
+                 yAxis:[{type:'category',axisLine:{onZero:false},axisLabel:{formatter:'{value}'},boundaryGap:false,data:{{mag}},name:'Mag' }],
+                 series:[{name:'Mag-JD',type:'line',smooth:true,itemStyle:{normal:{lineStyle:{shadowColor:'rgba(0,0,0,0.4)'}}},data:{{jd}}}]
+		 */
+		 xAxis:[{type:'value',scale:true,axisTick:{show:true,inside:true},name:'HJD'}],
+		 yAxis:[{type:'value',scale:true,name:'Mag'}],
+		 series:[{name:'HJD-Mag',type:'scatter',large:true,data:{{jdmag}}}]
+	    };
+            myChart.setOption(option);
+        }
+    );
+  </script>
+</div>
+{%endblock%}

@@ -1,0 +1,6 @@
+.index_h {background:#006699; margin:0px; padding:0px; height:50px; float:left; font-size:220%;}
+.index_t {border:2px solid blue; padding:0px; width:100%; margin:0px;}
+.thead {background-color:blue; color:white; text-align:center; height:30px;}
+.tdata {background-color:#EAF2D3;text-align:center;}
+.link {text-decoration:none;font-weight:bold;}
+.paginator-pages {text-decoration:none;border:1px solid gray;color:black;text-align:center;padding:5px;}

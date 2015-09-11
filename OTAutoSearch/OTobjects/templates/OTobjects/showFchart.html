@@ -1,0 +1,23 @@
+{%extends "OTobjects/base.html"%}
+{%load staticfiles%}
+
+{%block css%}
+   .tb{position:relative;left:50px;width:70%;}
+{%endblock%}
+
+{%block content%}
+<div id='tb' class='tb' >
+  <table  border=1>
+    <tr align=center>
+      <th>Catfile</th><th>JD</th><th>Fchart</th>
+    </tr>
+    {%for o4 in otm4%}
+      <tr>
+	<td>{{o4.Catid.Catna}}</td>
+	<td>{{o4.Catid.JD}}</td>
+	<td><img src="{%static 'OTobjects'%}/Fchart/{{o4.Fname}}" alt="{{o4.Fpath}}/{{o4.Fname}}"/></td>
+      </tr>
+    {%endfor%}
+  </table>
+</div>
+{%endblock%}
