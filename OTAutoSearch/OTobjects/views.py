@@ -4,7 +4,7 @@ from OTobjects.models import OTuniq as Model1, OTcands as Model2, Catfiles as Mo
 import scipy as sp
 
 # Create your views here.
-def Index(request,page=None,per_page=50):
+def Index(request,page=None,per_page=30):
     '''page     : the current page
        per_page : the number of records in pre page
     '''
@@ -31,13 +31,14 @@ def ShowImage(request,otid):
     return render_to_response('OTobjects/showImage.html')
 
 
-def ShowLightCurve(request,otid,JDC=2456000):
+def ShowLightCurve(request,otid,JDC=2450000):
     #-Select from OTcands
     otm2 = Model2.objects.filter(OTid=otid)
     jdmag = sp.asarray([[ot.Catid.JD,ot.magorig]for ot in otm2])
     jdmag[:,0] = jdmag[:,0]-JDC
     jdmag = jdmag[jdmag[:,0].argsort()]
-    jdmag = jdmag.tolist()
+    #jdmag = sp.loadtxt('/home/madong/projects/django/OTAutoSearch/OTobjects/OGLE-SMC-LPV-00189.dat',usecols=[0,1])
+    jdmag = jdmag.tolist()    
     dic = {'jdmag':jdmag,'jdc':JDC,'otid':otid}
     return render(request,'OTobjects/showLightCurve.html',dic)
 

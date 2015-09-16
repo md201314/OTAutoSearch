@@ -19,20 +19,20 @@
 {%block header%}
 <div id="header">
   <div id="site-name" class="index_h" style="width:100%;text-align:center;font-size:220%; font-weight:bold;">
-    <h>OT Identify</h>
+    <h>Transient Management System</h>
   </div>
 </div>
 {%endblock%}
 {%block content%}
 <table class="index_t" style="clear:both;">
   <tr class="thead">
-    <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th><th>Confirmed</th><th>Comments</th>
+    <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th><!--<th>Confirmed</th><th>Comments</th>-->
   </tr>
   {%for o in otm1%}
      <tr class="tdata">
        <td>{{o.OTid}}</td><td>{{o.x}}</td><td>{{o.y}}</td><td>{{o.Ra}}</td><td>{{o.Dec}}</td><td>{{o.magcalib}}</td><td>{{o.magorig}}</td><td>{{o.magorigErr}}</td><td>{{o.magres}}</td><td>{{o.magErr}}</td>
        <td><a class="counts" href="/ot/image/otid={{o.OTid}}" target="_blank">{{o.counts}}</a></td>
-       <td>confirmed</td><td>comment</td>
+       <!--<td>confirmed</td><td>comment</td>-->
      </tr>
   {%endfor%}
 </table>

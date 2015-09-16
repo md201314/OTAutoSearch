@@ -14,7 +14,6 @@
               }
     });
     require(
-        <!--['echarts','echarts/chart/line'],-->
         ['echarts','echarts/chart/line','echarts/chart/scatter'],
         function(ec){
             var myChart = ec.init(document.getElementById('lc'));
@@ -38,4 +37,5 @@
         }
     );
   </script>
+</div>
 {%endblock%}

@@ -2,7 +2,7 @@
 {%load staticfiles%}
 
 {%block css%}
-   body{background:honeydew;}
+   body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
    .label{position:fixed;top:40%;left:15px;width:7%;background:#303439;}
    .label ul{position:relative;left:-48px;}
    .label li{list-style-type:none;padding:8px;width:50px;}
