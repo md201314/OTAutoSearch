@@ -1,0 +1,46 @@
+{%extends "OTobjects/base.html"%}
+{%load staticfiles%}
+
+{%block css%}
+  .firstFchartTitle{position:relative;left:150px;width:70%;} 
+  .firstFchart{position:relative;left:150px;height:200px;width:70%;border:solid 1px gray;padding:0px;background:white;}
+  .confirm{position:relative;left:140px;width:72%;}
+  .commentTitle{position:relative;left:150px;width:70%;}
+  .comment{position:relative;left:150px;width:70%;}
+  .listcomment{position:relative;left:145px;width:70%;}
+{%endblock%}
+
+{%block js%}
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+       $("#fcomment").submit(function(e){
+           var num = parseInt($("#counts").text());
+           $("#counts").text((num+1).toString());
+       });
+    });
+  </script>
+{%endblock%}
+
+{%block content%}
+<div class="firstFchartTitle"><b>Fchart : </b>{{otm4_0.Catid.Catna}}<b> JD : </b>{{otm4_0.Catid.JD}}</div>
+<div id='firstFchart' class="firstFchart">
+    <img src="{%static 'OTobjects'%}/Fchart/{{otm4_0.Fname}}" alt="{{otm4_0.Fpath}}/{{otm4_0.Fname}}" style="align:center;"/>
+</div>
+<div id='confirm' class="confirm">
+  <iframe src="../index=status/" name="confirm" style="width:100%;height:15%;" scrolling="no" frameborder="0" ></iframe>
+</div>
+<div class="commentTitle"><b>Comment</b></div>
+<div id="comment" class="comment">
+  <form id="fcomment" action="../index=comment/" target="listcomment" method="post">
+    {% csrf_token %}
+    <textarea id="commentarea" name="commentarea" rows="5" cols="99"></textarea><br/>
+    <input type="submit" value="submit" style="position:relative;left:750px;">
+  </form>
+</div>
+<div id="listcomment" class="listcomment">
+  <span>Now,there are <span id="counts">{{counts}}</span> comments</span>
+  <hr>
+  <iframe src="../index=comment/" name="listcomment" style="width:100%;" frameborder="0" ></iframe>
+</div>
+{%endblock%}

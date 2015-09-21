@@ -1,6 +1,6 @@
 from django.shortcuts import render,render_to_response
 from django.core.paginator import Paginator
-from OTobjects.models import OTuniq as Model1, OTcands as Model2, Catfiles as Model3, Fchart as Model4
+from OTobjects.models import OTuniq as Model1, OTcands as Model2, Catfiles as Model3, Fchart as Model4, Comments as Model5
 import scipy as sp
 
 # Create your views here.
@@ -47,3 +47,31 @@ def ShowFchart(request,otid):
     otm4 = Model4.objects.filter(OTid=otid)
     dic = {'otm4':otm4,'otid':otid}
     return render(request,'OTobjects/showFchart.html',dic)
+
+def Confirm(request,otid):
+    #-Select from Fchart
+    otm4_0 = Model4.objects.filter(OTid=otid).first()
+    #-Select from Comments
+    otm5 = Model5.objects.filter(OTid=otid)
+    counts = otm5.count()
+    dic = {'otm4_0':otm4_0,'counts':counts,'otm5':otm5}
+    return render(request,'OTobjects/confirm.html',dic)
+
+def ChangeStatus(request,otid):
+    #-Update OTuniq
+    if request.POST:
+        Model1.objects.filter(OTid=otid).update(status=request.POST['status'])
+    #-Select from Fchart
+    otm4_0 = Model4.objects.filter(OTid=otid).first()
+    dic = {'otm4_0':otm4_0}
+    return render(request,'OTobjects/changeStatus.html',dic)
+
+def Comment(request,otid):
+    #-Insert into Comments
+    if request.POST:
+        Model5.objects.create(OTid_id=otid,comment=request.POST['commentarea'])
+    #-Select from Comments
+    otm5 = Model5.objects.filter(OTid=otid)
+    counts = otm5.count()
+    dic = {'otm5':otm5,'counts':counts}
+    return render(request,'OTobjects/listComment.html',dic)

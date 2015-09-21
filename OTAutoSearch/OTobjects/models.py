@@ -2,9 +2,10 @@ from django.db import models
 import os
 from OTAutoSearch.settings import base_path,static_path
 
-Fchart_path = os.path.join(static_path,'OTobjects')
+Fchart_path = os.path.join(static_path,'OTobjects/Fchart')
 # Create your models here.
 class OTuniq(models.Model):
+    STATUS_CHOICES = ((-1,'False transient'),(0,'To be confirmed'),(1,'True transient'),(2,'Continue to be confirmed'),)
     OTid = models.AutoField(primary_key=True,db_index=True)
     x = models.FloatField()
     y = models.FloatField()
@@ -17,8 +18,9 @@ class OTuniq(models.Model):
     magorigErr = models.FloatField()
     magref = models.FloatField()
     magrefErr = models.FloatField()
-    counts = models.IntegerField()
+    counts = models.IntegerField(default=1)
     c_filter = models.FloatField()
+    status = models.IntegerField(max_length=1,choices=STATUS_CHOICES,default=0)
 
     class Meta:
         db_table = 'otuniq'
@@ -70,4 +72,15 @@ class Fchart(models.Model):
         db_table = 'fchart'
         ordering = ['OTid','Catid']
     def __unicode__(self):
+        return str(self.OTid)
+
+class Comments(models.Model):
+    OTid = models.ForeignKey(OTuniq,db_column='OTid')
+    comment = models.TextField()
+    datetime = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'comments'
+        ordering = ['OTid']
+    def  __unicode__(self):
         return str(self.OTid)

@@ -1,0 +1,18 @@
+{%extends "OTobjects/base.html"%}
+
+{%block content%}
+<form id="fstatus" action="../index=status/" method="post">
+   {% csrf_token %}
+   <fieldset>
+     <legend><b>Confirm : </b>now status <span id="nowstatus" style="color:red;">{{otm4_0.OTid.status}}</span></legend>
+     <div style="position:relative;left:80px;">
+       <input type="radio" name="status" value="-1">-1
+       <input type="radio" name="status" value="0" checked="checked">0
+       <input type="radio" name="status" value="1">1
+       <input type="radio" name="status" value="2">2
+       <input type="submit" value="submit" style="position:relative;left:150px;"><br/>
+       <span style="font-style:italic;"><b>*note*:</b>-1 False transient; 0 To be confirmed; 1 True transient; 2 Continue to be confirmed</span>
+     </div>
+   </fieldset>
+</form>
+{%endblock%}
