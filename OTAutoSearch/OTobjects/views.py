@@ -4,7 +4,7 @@ from OTobjects.models import OTuniq as Model1, OTcands as Model2, Catfiles as Mo
 import scipy as sp
 
 # Create your views here.
-def Index(request,page=None,per_page=30):
+def Index(request,status=None,page=None,per_page=30):
     '''page     : the current page
        per_page : the number of records in pre page
     '''
@@ -20,7 +20,10 @@ def Index(request,page=None,per_page=30):
         page_start = 1
         page_end = 1
     #-Select from OTuniq
-    otm1 = Model1.objects.order_by('-counts')
+    if status:
+        otm1 = Model1.objects.filter(status=status).order_by('-counts')
+    else:
+        otm1 = Model1.objects.order_by('-counts')
     #-Paginator
     paginator = Paginator(otm1,per_page)
     otm1 = paginator.page(page)

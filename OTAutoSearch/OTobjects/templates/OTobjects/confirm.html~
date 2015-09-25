@@ -15,8 +15,8 @@
   <script type="text/javascript">
     $(document).ready(function(){
        $("#fcomment").submit(function(e){
-          var num = parseInt($("#counts").text());
-          $("#counts").text((num+1).toString());
+           var num = parseInt($("#counts").text());
+           $("#counts").text((num+1).toString());
        });
     });
   </script>
@@ -34,7 +34,7 @@
 <div id="comment" class="comment">
   <form id="fcomment" action="../index=comment/" target="listcomment" method="post">
     {% csrf_token %}
-    <textarea name="commentarea" rows="5" cols="99"></textarea><br/>
+    <textarea id="commentarea" name="commentarea" rows="5" cols="99"></textarea><br/>
     <input type="submit" value="submit" style="position:relative;left:750px;">
   </form>
 </div>

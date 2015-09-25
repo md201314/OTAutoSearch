@@ -5,9 +5,23 @@
 {%block css%}
     body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
     .index_h {background:#006699; margin:0px; padding:0px; height:50px; float:left; font-size:220%;}
-    .index_t {border:2px solid blue; padding:0px; width:100%; margin:0px;}
-    .thead {background-color:blue; color:white; text-align:center; height:30px;}
-    .tdata {background-color:#EAF2D3;text-align:center;}
+    .index_t {border:2px solid grey; padding:0px; width:100%; margin:0px;}
+    .thead {background:#303439; color:white; text-align:center; height:30px;}
+    /* Main menu */
+    ul {list-style-type:none;}
+    #status { margin:0px;padding:0px;}
+    #status li {padding:10px ;position:relative;}
+    #status a {color:white;font-weight:bold;text-decoration:none;}
+    #status li:hover > ul {display:block;}
+    /* Sub-menu */
+    #status ul {padding:0px;display:none;position:absolute;top:35px;left:90px;background:black;border-radius:5px;border:1px solid black;}
+    #status ul li {padding:0px;}
+    #status ul a {padding:5px;width:30px;display:block;font-size:70%;}
+    #status ul a:hover {background:green;}
+    #status ul li:first-child > a:after {content:'';position:absolute;left:20px;top:-8px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #444;}
+    #status ul li:first-child a:hover:after {border-bottom-color:#04acec;}
+
+    .tdata {background:#EAF2D3;text-align:center;}
     .counts {text-decoration:none;font-weight:bold;}
     .paginator-pages {text-decoration:none;border:1px solid gray;color:black;text-align:center;padding:5px;}
 {%comment%}
@@ -16,76 +30,112 @@
 {%endblock%}
 
 {%block title%}{%trans 'OTsearch'%}{%endblock%}
+
 {%block header%}
 <div id="header">
-  <div id="site-name" class="index_h" style="width:100%;text-align:center;font-size:220%; font-weight:bold;">
-    <h>Transient Management System</h>
+  <div id="site-name" class="index_h" style="width:100%;text-align:center;font-size:220%; font-weight:bold;padding-top:10px;">
+    Transient Management System
   </div>
 </div>
 {%endblock%}
+
 {%block content%}
 <table class="index_t" style="clear:both;">
   <tr class="thead">
-    <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th><th>Status</th><!--<th>Confirmed</th><th>Comments</th>-->
+    <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th>
+    <th>
+      <ul id="status">
+        <li><a href="{%url 'OTobjects:index'%}">Status</a>
+        <ul>
+          <li><a href="/ot/status=-1">-1</a>
+          <li><a href="/ot/status=0">0</a>
+          <li><a href="/ot/status=1">1</a>
+          <li><a href="/ot/status=2">2</a>
+          <li><a href="{%url 'OTobjects:index'%}">all</a>
+        </ul>
+      </ul>
+    </th>
   </tr>
-  {%for o in otm1%}
-     <tr class="tdata">
-       <td>{{o.OTid}}</td><td>{{o.x}}</td><td>{{o.y}}</td><td>{{o.Ra}}</td><td>{{o.Dec}}</td><td>{{o.magcalib}}</td><td>{{o.magorig}}</td><td>{{o.magorigErr}}</td><td>{{o.magres}}</td><td>{{o.magErr}}</td>
-       <td><a class="counts" href="/ot/image/otid={{o.OTid}}" target="_blank">{{o.counts}}</a></td>
-       <td>{{o.status}}</td><!--<td><a href="#">0</a></td><td>comment</td>-->
-     </tr>
-  {%endfor%}
+{%for o in otm1%}
+   <tr class="tdata">
+     <td>{{o.OTid}}</td><td>{{o.x}}</td><td>{{o.y}}</td><td>{{o.Ra}}</td><td>{{o.Dec}}</td><td>{{o.magcalib}}</td><td>{{o.magorig|floatformat:2}}</td><td>{{o.magorigErr}}</td><td>{{o.magres|floatformat:2}}</td><td>{{o.magErr}}</td>
+     <td><a class="counts" href="/ot/image/otid={{o.OTid}}" target="_blank">{{o.counts}}</a></td>
+     <td>{%if o.status == -1 %}
+             <span title="False transient">-1</span>
+         {%elif o.status == 0 %}
+             <span title="To be confirmed">0</span>
+         {%elif o.status == 1 %}
+             <span title="True transient">1</span>
+         {%else%}
+             <span title="Continue to be confirmed">2</span>
+         {%endif%}
+     </td>
+   </tr>
+{%endfor%}
 </table>
 {%endblock%}
+
 {%block footer%}
-<div id="note">
-  <span style="font-style:italic;"><b>*status*:</b>-1 False transient; 0 To be confirmed; 1 True transient; 2 Continue to be confirmed</span>
-</div>
-<div style="text-align:center;position:relative;top:10px;">
-  {#previous#}
-  {%if otm1.has_previous%}
-       <a class="paginator-pages" href="{%url 'OTobjects:index'%}page={{page|add:'-1'}}">previous</a>
-  {%endif%}
-  {#the center pages.If the number of pages is less than or equeal to 10,all pages will be displayed. If it's greater than 10,"..." will be displayed.Before "...",only display one page.After "...",only display ten pages.#}
-  {#<=10#}
-  {%if paginator.num_pages <= 10%}
-       {%for i in paginator.page_range%}
-	    {%if i == page%}
-                <b>{{i}}</b>
-            {%else%}
-                <a class="paginator-pages" href="{%url 'OTobjects:index'%}page={{i}}">{{i}}</a>
-            {%endif%}
-       {%endfor%}
-  {%endif%}
-  {#>10#}
-  {%if paginator.num_pages > 10%}
-       {%if page >= 4 %}
-           <a class="paginator-pages" href="{%url 'OTobjects:index'%}page=1">1</a>
-           ...
-           {%for i in paginator.page_range%}
-                {%if i >= page_start and i <= page_end%}
-                     {%if i == page%}
-                         <b>{{i}}</b>
-                     {%else%}
-                         <a class="paginator-pages" href="{%url 'OTobjects:index'%}page={{i}}">{{i}}</a>
-                     {%endif%}
-                {%endif%}
-           {%endfor%}
-       {%else %}
-           {%for i in paginator.page_range%}
-                {%if i == page %}
-                     <b>{{i}}</b>
-                {%else%}
-                     {%if i <= 8%}
-                         <a class="paginator-pages" href="{%url 'OTobjects:index'%}page={{i}}">{{i}}</a>
-                     {%endif%}
-                {%endif%}
-           {%endfor%}
-       {%endif%}
-  {%endif%}
-  {#next#}
-  {%if otm1.has_next%}
-       <a class="paginator-pages" href="{%url 'OTobjects:index'%}page={{page|add:'1'}}">next</a>
-  {%endif%}
-</div>
+{%if otm1%}
+  <span style="position:relative;top:5px;"><i><b>*status*:</b>-1 False transient; 0 To be confirmed; 1 True transient; 2 Continue to be confirmed</i></span>
+  <div style="text-align:center;position:relative;top:15px;">
+    {#previous#}
+    {%if otm1.has_previous%}
+        <a class="paginator-pages" href="./page={{page|add:'-1'}}">previous</a>
+    {%endif%}
+    {#the center pages.If the number of pages is less than or equeal to 10,all pages will be displayed. If it's greater than 10,"..." will be displayed.Before "...",only display one page.After "...",only display ten pages.#}
+    {#<=10#}
+    {%if paginator.num_pages <= 10%}
+         {%for i in paginator.page_range%}
+              {%if i == page%}
+                  <b>{{i}}</b>
+              {%else%}
+                  <a class="paginator-pages" href="./page={{i}}">{{i}}</a>
+              {%endif%}
+         {%endfor%}
+    {%endif%}
+    {#>10#}
+    {%if paginator.num_pages > 10%}
+         {%if page >= 4 %}
+             <a class="paginator-pages" href="./page=1">1</a>
+             ...
+             {%for i in paginator.page_range%}
+                  {%if i >= page_start and i <= page_end%}
+                       {%if i == page%}
+                           <b>{{i}}</b>
+                       {%else%}
+                           <a class="paginator-pages" href="./page={{i}}">{{i}}</a>
+                       {%endif%}
+                  {%endif%}
+             {%endfor%}
+         {%else %}
+             {%for i in paginator.page_range%}
+                  {%if i == page %}
+                       <b>{{i}}</b>
+                  {%else%}
+                       {%if i <= 8%}
+                           <a class="paginator-pages" href="./page={{i}}">{{i}}</a>
+                       {%endif%}
+                  {%endif%}
+             {%endfor%}
+         {%endif%}
+    {%endif%}
+    {#next#}
+    {%if otm1.has_next%}
+         <a class="paginator-pages" href="./page={{page|add:'1'}}">next</a>
+    {%endif%}
+  </div>
+{%else%}
+  <div style="color:red;position:relative;top:100px;text-align:center;">
+     <p><b>Sorry,there are no datasets for you.</b></p>
+  </div>
+{%endif%}
 {%endblock%}
+
+
+
+<div id='listdata'>
+  <iframe src="{%url 'OTobjects:listdata'%}" name="listdata" style="width:100%;height:110%;" scrolling="no" frameborder="0" ></iframe>
+</div>
+
+{%include "OTobjects/paginator.html" with  paginator='paginator' page='page' page_start='page_start' page_end='page_end' only%}
