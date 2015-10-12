@@ -3,15 +3,10 @@
 
 {%block css%}
    body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
-   .label{position:fixed;top:40%;left:15px;width:100px;background:#303439;border-radius:5px;}
-   .label ul{position:relative;left:-48px;}
-   .label li{list-style-type:none;padding:8px;width:50px;}
-   .label ul li a{display:block;text-decoration:none;font-weight:bold;color:white;text-align:left;width:90px;padding:5px;}
-   .label ul li a:hover{background:#5b6571;}
-   .image{width:1200px;}
 {%endblock%}
 
 {%block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'OTobjects/css/showImage.css' %}" />
 <!--left frame-->
 <div style="float:left;width:10%;">
   <div id='label' class='label'>

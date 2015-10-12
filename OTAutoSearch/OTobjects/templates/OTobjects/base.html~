@@ -1,10 +1,15 @@
 <!DOCTYPE thml>
+{% load staticfiles %}
 <html>
 	<head>
 		<meta charset="utf-8">
 		<title> {%block title%} {%endblock%} </title>
-		<style type="text/css">{%block css%}{%endblock%}</style>
-		<script type="text/javascript">{%block js%}{%endblock%}</script>
+		<style type="text/css">
+		  {%block css%}
+		       body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
+		  {%endblock%}
+		</style>
+		{%block js%}{%endblock%}
 	</head>
 
 	<body>

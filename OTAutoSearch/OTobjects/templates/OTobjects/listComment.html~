@@ -1,6 +1,6 @@
 {%extends "OTobjects/base.html"%}
 
-{%block css%}
+{%block js%}
 {%endblock%}
 
 {%block content%}

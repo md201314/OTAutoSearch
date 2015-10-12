@@ -4,43 +4,21 @@
 
 {%block css%}
     body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
-    .index_h {background:#006699; margin:0px; padding:0px; height:50px; float:left; font-size:220%;}
-    .index_t {border:2px solid grey; padding:0px; width:100%; margin:0px;}
-    .thead {background:#303439; color:white; text-align:center; height:30px;}
-    /* Main menu */
-    ul {list-style-type:none;}
-    #status { margin:0px;padding:0px;}
-    #status li {padding:10px ;position:relative;}
-    #status a {color:white;font-weight:bold;text-decoration:none;}
-    #status li:hover > ul {display:block;}
-    /* Sub-menu */
-    #status ul {padding:0px;display:none;position:absolute;top:35px;left:90px;background:black;border-radius:5px;border:1px solid black;}
-    #status ul li {padding:0px;}
-    #status ul a {padding:5px;width:30px;display:block;font-size:70%;}
-    #status ul a:hover {background:green;}
-    #status ul li:first-child > a:after {content:'';position:absolute;left:20px;top:-8px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #444;}
-    #status ul li:first-child a:hover:after {border-bottom-color:#04acec;}
-
-    .tdata {background:#EAF2D3;text-align:center;}
-    .counts {text-decoration:none;font-weight:bold;}
-    .paginator-pages {text-decoration:none;border:1px solid gray;color:black;text-align:center;padding:5px;}
-{%comment%}
-  <link rel="stylesheet" type="text/css" href="{% static 'OTobjects'%}/css/index.css" media="screen"/>
-{%endcomment%}
 {%endblock%}
 
 {%block title%}{%trans 'OTsearch'%}{%endblock%}
 
 {%block header%}
+<link rel="stylesheet" type="text/css" href="{% static 'OTobjects/css/index.css'%}"/>
 <div id="header">
-  <div id="site-name" class="index_h" style="width:100%;text-align:center;font-size:220%; font-weight:bold;padding-top:10px;">
+  <div id="site-name" class="index_h">
     Transient Management System
   </div>
 </div>
 {%endblock%}
 
 {%block content%}
-<table class="index_t" style="clear:both;">
+<table class="index_t">
   <tr class="thead">
     <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th>
     <th>
@@ -58,7 +36,7 @@
   </tr>
 {%for o in otm1%}
    <tr class="tdata">
-     <td>{{o.OTid}}</td><td>{{o.x}}</td><td>{{o.y}}</td><td>{{o.Ra}}</td><td>{{o.Dec}}</td><td>{{o.magcalib}}</td><td>{{o.magorig|floatformat:2}}</td><td>{{o.magorigErr}}</td><td>{{o.magres|floatformat:2}}</td><td>{{o.magErr}}</td>
+     <td>{{o.OTid}}</td><td>{{o.x|floatformat:4}}</td><td>{{o.y}}</td><td>{{o.Ra}}</td><td>{{o.Dec}}</td><td>{{o.magcalib}}</td><td>{{o.magorig|floatformat:2}}</td><td>{{o.magorigErr|floatformat:3}}</td><td>{{o.magres|floatformat:2}}</td><td>{{o.magErr|floatformat:4}}</td>
      <td><a class="counts" href="/ot/image/otid={{o.OTid}}" target="_blank">{{o.counts}}</a></td>
      <td>{%if o.status == -1 %}
              <span title="False transient">-1</span>

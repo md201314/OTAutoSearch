@@ -2,7 +2,6 @@
 {%load staticfiles%}
 
 {%block css%}
-   body{background:honeydew;}
    .tb{position:relative;left:50px;width:70%;}
 {%endblock%}
 

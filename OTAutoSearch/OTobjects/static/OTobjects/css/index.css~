@@ -1,6 +1,20 @@
 .index_h {background:#006699; margin:0px; padding:0px; height:50px; float:left; font-size:220%;}
 .index_t {border:2px solid blue; padding:0px; width:100%; margin:0px;}
 .thead {background-color:blue; color:white; text-align:center; height:30px;}
+/* Main menu */
+ul {list-style-type:none;}
+#status { margin:0px;padding:0px;}
+#status li {padding:10px ;position:relative;}
+#status a {color:white;font-weight:bold;text-decoration:none;}
+#status li:hover > ul {display:block;}
+/* Sub-menu */
+#status ul {padding:0px;display:none;position:absolute;top:35px;left:90px;background:black;border-radius:5px;border:1px solid black;}
+#status ul li {padding:0px;}
+#status ul a {padding:5px;width:30px;display:block;font-size:70%;}
+#status ul a:hover {background:green;}
+#status ul li:first-child > a:after {content:'';position:absolute;left:20px;top:-8px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #444;}
+#status ul li:first-child a:hover:after {border-bottom-color:#04acec;}
+
 .tdata {background-color:#EAF2D3;text-align:center;}
-.link {text-decoration:none;font-weight:bold;}
+.counts {text-decoration:none;font-weight:bold;}
 .paginator-pages {text-decoration:none;border:1px solid gray;color:black;text-align:center;padding:5px;}
