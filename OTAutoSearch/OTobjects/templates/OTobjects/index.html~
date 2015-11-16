@@ -11,14 +11,21 @@
 {%block header%}
 <link rel="stylesheet" type="text/css" href="{% static 'OTobjects/css/index.css'%}"/>
 <div id="header">
-  <div id="site-name" class="index_h">
-    Transient Management System
+  <div id="site-name" class="index_h" style="width:65%;float:left;text-align:right;">
+    {{"Transient management system"|title}}
+  </div>
+  <div id="login" class="index_h" style="width:35%;float:right;text-align:center;">
+    {%if userstatus%}
+        <span class="welcome">Welcome<span style="color:#99CC33;">&nbsp;<b>{{username}}</span>.<a class="logout" href="{%url 'OTobjects:logout'%}">Logout</a></span>
+    {%else%}
+	<a class="login" href="{%url 'OTobjects:login_form'%}">Login</a>
+    {%endif%}
   </div>
 </div>
 {%endblock%}
 
 {%block content%}
-<table class="index_t">
+<table class="index_t" style="clear:both">
   <tr class="thead">
     <th>OTid</th><th>X</th><th>Y</th><th>Ra</th><th>Dec</th><th>Magcalib</th><th>Magorig</th><th>MagorigErr</th><th>Magres</th><th>MagresErr</th><th>Counts</th>
     <th>

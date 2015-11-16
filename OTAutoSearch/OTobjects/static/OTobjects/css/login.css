@@ -1,0 +1,7 @@
+.login {border:1px solid gray; position:relative; left:500px; top:100px; width:400px; height:220px;}
+.login_h {background:#006699; height:45px; text-align:center;}
+.login_title {padding:10px;position:relative; top:0px; color:#6B8E23;}
+.login_c {background:white; height:131px; text-align:center; font-family:Arial; line-height:40px;}
+.login_c input {height:30px;}
+.login_f {background:gray; height:45px; font-family:Arial;}
+a {text-decoration:none;}

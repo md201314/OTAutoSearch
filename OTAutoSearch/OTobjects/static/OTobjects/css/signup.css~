@@ -1,0 +1,9 @@
+.signup {position:relative; left:400px; top:50px; width:40%;}
+.signup_h {background:#006699; height:7%; text-align:center; line-height:50px;}
+.signup_c {height:45%;}
+.left {float:left; text-align:right; line-height:50px;}
+.right {float:left; text-align:left; line-height:50px;}
+.right span {color:red;font-size:66%;font-weight:bold;}
+input {height:30px;}
+.signup_message {clear:left;}
+.signup_f {background:gray; height:15%;}

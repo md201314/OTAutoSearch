@@ -11,6 +11,7 @@ class OTuniq(models.Model):
     y = models.FloatField()
     Ra = models.FloatField()
     Dec = models.FloatField()
+    skyid = models.CharField(max_length=6,db_index=True)
     magcalib = models.FloatField()
     magres = models.FloatField()
     magErr = models.FloatField()
@@ -34,6 +35,11 @@ class Catfiles(models.Model):
     orig_im = models.CharField(max_length=50)
     ref_im = models.CharField(max_length=50)
     JD = models.FloatField()
+    mountid = models.CharField(max_length=2)
+    cameraid = models.CharField(max_length=2)
+    ymd = models.CharField(max_length=6)
+    skyid = models.CharField(max_length=6)
+    mcysids = models.CharField(max_length=19)
 
     class Meta:
         db_table = 'catfiles'
@@ -74,8 +80,32 @@ class Fchart(models.Model):
     def __unicode__(self):
         return str(self.OTid)
 
+class Users(models.Model):
+    uid = models.AutoField(primary_key=True,db_index=True)
+    uname = models.CharField(max_length=16,unique=True,db_index=True)
+    passwd = models.CharField(max_length=50)
+    email_add = models.EmailField()
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=30)
+    status = models.NullBooleanField(default=False)
+    
+    class Meta:
+        db_table = 'users'
+        ordering = ['uid']
+        def __unicode__(self):
+            return str(self.uid)
+
 class Comments(models.Model):
+    STATUS_CHOICES = ((-1,'False transient'),(0,'To be confirmed'),(1,'True transient'),(2,'Continue to be confirmed'),)
     OTid = models.ForeignKey(OTuniq,db_column='OTid')
-    comment = models.TextField()
+    uid = models.ForeignKey(Users,db_column='uid')
+    status = status = models.IntegerField(max_length=1,choices=STATUS_CHOICES,default=0)
+    comment = models.TextField(blank=True)
     datetime = models.DateTimeField(auto_now_add=True)
     
+    class Meta:
+        db_table = 'comments'
+        ordering = ['OTid']
+    def  __unicode__(self):
+        return str(self.OTid)
+

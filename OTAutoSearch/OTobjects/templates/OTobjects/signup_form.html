@@ -1,0 +1,41 @@
+{%extends "OTobjects/base.html"%}
+
+{%load staticfiles%}
+
+{%block css%}
+{%endblock%}
+
+{%block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'OTobjects/css/signup.css'%}"/>
+<div id="signup" class="signup">
+  <div id="signup_h" class="signup_h">
+    <b>User Signup Form</b>
+  </div>
+  <div id="signup_c" class="signup_c">
+    <form action="{%url 'OTobjects:signup'%}" method="POST">
+      {%csrf_token%}
+      <div id="left" class="left" style="width:40%; height:95%;">
+	username&nbsp;:<br>
+	password&nbsp;:<br>
+	password confirmation&nbsp;:<br>
+	First name&nbsp;:<br>
+	Last name&nbsp;:<br>
+	Email address&nbsp;:<br>
+      </div>
+      <div id="right" class="right" style="width:60%; height:95%;">
+	&nbsp;<input type="text" name="uname" autofocus><span> *</span><br>
+	&nbsp;<input type="password" name="passwd"><span> *</span><br>
+	&nbsp;<input type="password" name="passwdConf"><span> *</span><br>
+	&nbsp;<input type="text" name="fname"><span> *</span><br>
+	&nbsp;<input type="text" name="lname"><span> *</span><br>
+	&nbsp;<input type="email" name="email"><span> *</span><br>
+      </div>
+      <div id="message" class="signup_message">
+	<span style="color:red;">{{message}}</span>
+      </div>
+      <div id="signup_f" class="signup_f">
+	<input type="submit" value="submit" style="position:relative; left:450px; top:10px;">
+        </form>
+   </div>
+ </div>
+{%endblock%}

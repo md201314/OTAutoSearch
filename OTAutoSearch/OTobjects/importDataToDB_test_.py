@@ -1,0 +1,169 @@
+
+#import psycopg2
+#import scipy as sp
+
+#-Read data
+#dat = sp.loadtxt('/home/madong/work/miniGWAC/test/otpredict/resi_Comb_test_0019_0028_CR3.dat')
+#-Connect database
+#conn = psycopg2.connect(database='OTdb',user='minigwac',password='gwac',host='localhost',port='5439')
+#cur = conn.cursor()
+#conn.rollback()
+#-Import data to table
+#for i,d in enumerate(dat):
+#    cur.execute("insert into otuniq values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(i,d[1],d[2],0,0,0,d[4],d[3],0,0,0,0))
+
+#------------------
+from OTobjects.models import *
+from OTAutoSearch.settings import static_path
+import scipy as sp
+import os
+from glob import glob
+import pyfits
+import vaphot as Vap
+#import GWmatchImage
+
+def intodb(catnap,tempim=None,maxnum=200,skyid='*'):
+   """
+   catnap : cat file name and path
+   tempim: template image,Opthion. Default is None
+   maxnum: the maxmum of ot total number. Default 200
+   skyid : sky id. Default '*'(all)
+   """
+   #-Get the name of cat files
+   #catnas = glob('%s/resi_*%s*.cat'%(cpath,skyid))
+   #-ln Fchart
+   pref_catnap = catnap.rsplit('.',1)[0]
+   os.system("ln -s %s_*.png  %s/OTobjects/Fchart/"%(pref_catnap,static_path))
+   #-Import data to table
+   #for catnap in catnas:
+   if True:
+       print '----------------------------------'
+       print 'cat:',catnap
+       #-Import data to table (Catfiles)
+       #resifn = '.'.join((c.rsplit('.',1)[0],'fit'))
+       resifn = catnap.replace('.cat','.fit')
+       procPath = catnap.rsplit('resi_',1)[0]
+       #-Get original fits and template fits
+       rawcomPath = resifn.replace('/difimage/proc','/difimage/rawcom').rsplit('resi_',1)[0]
+       origfn = '%s%s'%(rawcomPath,resifn.rsplit('resi_',1)[-1])
+       #-Read dat data(x,y,mag_aper,magerr_aper)
+       #datna = '_resi.'.join((origfn.rsplit('.',1)[0],'dat')).replace('/difimage/rawcom','/difimage/proc')
+       datna = ''.join((procPath,origfn.rsplit('/',1)[-1].replace('.fit','_resi.dat')))
+       try:
+          dat = sp.loadtxt(datna,usecols=[1,2,3,4,5,6],dtype='S100')
+          print '==> OT counts:',len(dat)
+       except:
+          print '==> Read .dat(%s) file failed: ot counts >%s!!!'%(datna,maxnum)
+          #continue
+          return
+       #-Get JD
+       try:
+           jd = pyfits.getval(resifn,'JD')
+       except:
+           jd = -999999
+       if len(dat)<maxnum:
+          print '==> Start to store into database ...'
+          #-Add a record into table (Catfiles)
+          if not tempim:
+             tempim = 'Temp_%s.fit'%'_'.join(catnap.rsplit('/',1)[1].split('_')[1:6])
+          tempfn = '%s%s'%(rawcomPath,tempim)
+          #print 'tempfn:',tempfn
+          ref_im = tempim
+          ids = catnap.rsplit('/',1)[1].split('_')
+          mountid = ids[1]
+          cameraid = ids[2]
+          ymd = ids[3]
+          skyid = ids[5]
+          mcysids = '_'.join([mountid,cameraid,ymd,skyid])
+          Catfiles.objects.create(Catna=catnap.rsplit('/',1)[1],orig_im=catnap.rsplit('resi_',1)[1],ref_im=tempim,JD=jd,mountid=mountid,cameraid=cameraid,ymd=ymd,skyid=skyid,mcysids=mcysids)
+          #-Get catid from table Catfiles
+          catid = Catfiles.objects.last().Catid
+          # Aimage - Bimage = Cimage
+          #-coordinate,original image name ,template image name 
+          #cor = sp.array(zip([float(d) for d in dat[:,0]],[float(d) for d in dat[:,1]]))
+          cor = sp.array(zip(dat[:,0],dat[:,1]))
+          #origfn = ''.join(resifn.rsplit('resi_',1))
+          #rawcomPath = resifn.replace('/difimage/proc','/difimage/rawcom').rsplit('resi_',1)[0]
+          #origfn = '%s%s'%(rawcomPath,resifn.rsplit('resi_',1)[-1])
+          #tempfn = '%s%s'%(rawcomPath,tempim)
+          #-Calculate original image magorig and magorigErr (Aimage)
+          orimag = Vap.DaoAper(origfn,cor,exptime=10,aperture=2.0,gain=1.0,rdnoise=8.0,calgorithm='none',zmag=0)
+          #-Calculate template image magref and magrefErr (Bimage)
+          tempmag = Vap.DaoAper(tempfn,cor,exptime=10,aperture=2.0,gain=1.0,rdnoise=8.0,calgorithm='none',zmag=0)
+          #-parameters for output png    
+          #imfiles = [origfn,tempfn,resifn]
+          #-Import data to table (OTuniq, OTcands)
+          #-maxnum<200
+          if OTuniq.objects.count()>0:
+             for i,d in enumerate(dat):
+                x_d = float(d[0])
+                y_d = float(d[1])
+                #init
+                dis_min = 1e+15
+                id = 0
+                x = 0
+                y = 0
+               #-Output png
+               #B = GWmatchImage.ImShow(imfiles,d[:2],contrast='zscale', scale='linear', tag_cats=True)
+               #C = B.plotobj(text=None, oversample=2.0, radius=5.0, color='r', color_b='g', winsize=[100, 100], debug=False)
+               #outfile = '%s_%i.png'%(catna.rsplit('.',1)[0],i)
+               #C.save(outfile)
+               #os.system("ln -s  %s %s/OTobjects/Fchart/"%(outfile,static_path))
+               #return the value(id,x,y) of cross match
+                for o in OTuniq.objects.filter(skyid=skyid):
+                    #distance
+                    dis = sp.sqrt((x_d-o.x)**2+(y_d-o.y)**2)
+                    if dis < dis_min:
+                       dis_min = dis
+                       id = o.OTid
+                       x = o.x
+                       y = o.y
+               #Write to table or update table
+               #Match
+                if dis_min <1:
+                   print 'update:id=%s x=%s y=%s'%(id,x,y)
+                   #-Update table(OTuniq) a record
+                   counts = OTuniq.objects.get(OTid=id).counts+1
+                   OTcands_sets = OTcands.objects.filter(OTid=id)
+                   x_mid = sp.median([o.x for o in OTcands_sets])
+                   y_mid = sp.median([o.y for o in OTcands_sets])
+                   ra_mid = sp.median([o.Ra for o in OTcands_sets])
+                   dec_mid = sp.median([o.Dec for o in OTcands_sets])
+                   OTuniq.objects.filter(OTid=id).update(x=x_mid,y=y_mid,Ra=ra_mid,Dec=dec_mid,magres=d[2],magErr=d[3],magorig=orimag[i,0],magorigErr=orimag[i,1],magref=0,magrefErr=0,counts=counts)
+               #No match
+                else:
+                   #-Add a record into table (OTuniq)
+                   OTuniq.objects.create(x=d[0],y=d[1],Ra=d[4],Dec=d[5],skyid=skyid,magcalib=0,magres=d[2],magErr=d[3],magorig=orimag[i,0],magorigErr=orimag[i,1],magref=0,magrefErr=0,counts=1,c_filter=0)
+                   id = OTuniq.objects.last().OTid
+                   x = d[0]
+                   y = d[1]
+                   print 'create:id=%s x=%s y=%s'%(id,x,y)
+
+                #Write to table:OTcands (Whether or not to match)
+                OTcands.objects.create(OTid_id=id,Catid_id=catid,x=x,y=y,Ra=d[4],Dec=d[5],magres=d[2],magresErr=d[3],magorig=orimag[i,0],magorigErr=orimag[i,1],magrescalib=0,filter=0,tag_refstr=0)
+                #Add records into table:Fchart
+                fname = ''.join((catnap.rsplit('/',1)[1].rsplit('.',1)[0],'_%i.png'%i))
+                Fchart.objects.create(OTid_id=id,Catid_id=catid,Fname=fname)
+
+          else:
+             print '==> database is null!!!'
+             for i,d in enumerate(dat):
+                #-Add records
+                #table:OTuniq
+                OTuniq.objects.create(x=d[0],y=d[1],Ra=d[4],Dec=d[5],skyid=skyid,magcalib=0,magres=d[2],magErr=d[3],magorig=orimag[i,0],magorigErr=orimag[i,1],magref=tempmag[i,0],magrefErr=tempmag[i,1],counts=1,c_filter=0)
+                #OTuniq.objects.create(x=d[0],y=d[1],Ra=0,Dec=0,magcalib=0,magres=d[2],magErr=d[3],magorig=0,magorigErr=0,magref=0,magrefErr=0,counts=1,c_filter=0)
+                #table:OTcands
+                id = OTuniq.objects.last().OTid
+                OTcands.objects.create(OTid_id=id,Catid_id=catid,x=d[0],y=d[1],Ra=d[4],Dec=d[5],magres=d[2],magresErr=d[3],magorig=orimag[i,0],magorigErr=orimag[i,1],magrescalib=0,filter=0,tag_refstr=0)
+                #-Output png
+                #B = GWmatchImage.ImShow(imfiles,d[:2],contrast='zscale', scale='linear', tag_cats=True)
+                #C = B.plotobj(text=None, oversample=2.0, radius=5.0, color='r', color_b='g', winsize=[100, 100], debug=False)
+                #outfile = '%s_%i.png'%(catnap.rsplit('.',1)[0],i)
+                #C.save(outfile)
+                #os.system("ln -s  %s %s/OTobjects/"%(outfile,static_path))
+                #table:Fchart
+                fname = ''.join((catnap.rsplit('/',1)[1].rsplit('.',1)[0],'_%i.png'%i))
+                Fchart.objects.create(OTid_id=id,Catid_id=catid,Fname=fname)
+       #-maxnum>200
+       else:
+          print '==> %s is not stored into database[maxmum(%s>200)]'%(datna,len(dat))

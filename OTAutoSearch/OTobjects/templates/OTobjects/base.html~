@@ -1,14 +1,9 @@
-<!DOCTYPE thml>
-{% load staticfiles %}
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title> {%block title%} {%endblock%} </title>
-		<style type="text/css">
-		  {%block css%}
-		       body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
-		  {%endblock%}
-		</style>
+		<style type="text/css">{%block css%}{%endblock%}</style>
 		{%block js%}{%endblock%}
 	</head>
 

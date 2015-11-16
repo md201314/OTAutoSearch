@@ -1,4 +1,8 @@
-.index_h {background:#006699; margin:0px; padding-top:10px; height:50px; font-size:220%; text-align:center; font-weight:bold;}
+.index_h {background:#006699; margin:0px; padding-top:10px; height:50px; font-size:220%; font-weight:bold;}
+.login {position:relative;left:70%;top:35%;display:block;width:60px;height:20px;color:white;padding:5px;text-decoration:none;font-size:50%;font-weight:normal;}
+.welcome {position:relative;left:50%;top:35%;display:block;width:60px;height:20px;color:white;padding:5px;text-decoration:none;font-size:50%;font-weight:normal;}
+.logout {width:60px;height:20px;color:white;padding:5px;text-decoration:none;font-weight:normal;}
+.login:hover {background-color:#6B8E23;}
 .index_t {border:2px solid blue; padding:0px; margin:0px; width:100%;}
 .thead {background-color:#303439; color:white; text-align:center; height:30px;}
 /* Main menu */

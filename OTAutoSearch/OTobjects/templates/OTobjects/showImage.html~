@@ -2,7 +2,7 @@
 {%load staticfiles%}
 
 {%block css%}
-   body{background:url("{%static 'OTobjects'%}/image/bg_content.png1");}
+   body{background:url("{%static 'OTobjects'%}/image/bg_content.png");}
 {%endblock%}
 
 {%block content%}
@@ -20,7 +20,7 @@
 <!--right frame-->
 <div style="float:right;position:relative;width:90%;">
   <div id='image' class='image'>
-    <iframe src="./index=lc" name="image" style="width:100%;height:100%;" frameborder="0"></iframe>
+    <iframe src="./index=fchart" name="image" style="width:100%;height:100%;" frameborder="0"></iframe>
   </div>
 </div>
 

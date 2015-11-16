@@ -1,0 +1,40 @@
+{%extends "OTobjects/base.html"%}
+{%load staticfiles%}
+
+{%block css%}
+{%endblock%}
+
+{%block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'OTobjects/css/login.css'%}"/>
+<div id="login" class="login">
+  <div id="login_h" class="login_h" >
+    <div class="login_title">
+      <b>User login</b>
+    </div>
+  </div>
+  <div id="login_c" class="login_c">
+    <div id="form" style="position:relative; top:30px;">
+      <form action="{%url 'OTobjects:login'%}" method="post">
+	{%csrf_token%}
+	Username:&nbsp;<input type="text" name="uname" autofocus><br>
+	Password:&nbsp;<input type="password" name="passwd"><br>
+    </div>
+    <div id="message" style="line-height:50px;">
+      <span style="color:red;">{{message}}</span>
+    </div>	
+  </div>
+  <div id="login_f" class="login_f">
+    <div id="signup" style="height:100%; width:50%; float:left;">
+      <div id="signup" style="position:relative; left:20px; top:15px;">
+	<a href="{%url 'OTobjects:signup_form'%}">sigup</a>
+      </div>
+    </div>
+    <div id="submit" style="height:100%; width:50%; float:left;">
+      <div id="submit" style="position:relative; left:100px; top:10px;">
+	<input type="submit" value="Login">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

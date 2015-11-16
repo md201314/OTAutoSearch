@@ -14,7 +14,7 @@
 
 #------------------
 from OTobjects.models import *
-from OTAutoSearch.settings import base_path,static_path
+from OTAutoSearch.settings import static_path
 import scipy as sp
 import os
 from glob import glob

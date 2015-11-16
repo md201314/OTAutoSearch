@@ -70,7 +70,7 @@ for c in catna:
             C = B.plotobj(text=None, oversample=2.0, radius=5.0, color='r', color_b='g', winsize=[100, 100], debug=False)
             outfile = '%s_%i.png'%(c.rsplit('.',1)[0],i)
             C.save(outfile)
-            os.system("ln -s  %s/%s %s/OTobjects/Fchart"%(base_path,outfile,static_path))
+            os.system("ln -s  %s %s/OTobjects/Fchart/"%(outfile,static_path))
             #return the value(id,x,y) of cross match
             for o in OTuniq.objects.all():
                 #distance
@@ -118,7 +118,7 @@ for c in catna:
             C = B.plotobj(text=None, oversample=2.0, radius=5.0, color='r', color_b='g', winsize=[100, 100], debug=False)
             outfile = '%s_%i.png'%(c.rsplit('.',1)[0],i)
             C.save(outfile)
-            os.system("ln -s  %s/%s %s/OTobjects/Fchart"%(base_path,outfile,static_path))
+            os.system("ln -s  %s %s/OTobjects/Fchart/"%(outfile,static_path))
             #table:Fchart
             fname = ''.join((c.rsplit('/',1)[1].rsplit('.',1)[0],'_%i.png'%i))
             Fchart.objects.create(OTid_id=id,Catid_id=catid,Fname=fname)

@@ -19,22 +19,15 @@
 <div id='firstFchart' class="firstFchart">
     <img src="{%static 'OTobjects'%}/Fchart/{{otm4_0.Fname}}" alt="{{otm4_0.Fpath}}/{{otm4_0.Fname}}" style="align:center;"/>
 </div>
+<div id='confirm' class="confirm">
+  <iframe src="../index=status/" name="confirm" style="width:100%;height:15%;" scrolling="no" frameborder="0" ></iframe>
+</div>
 <div class="commentTitle"><b>Comment</b></div>
 <div id="comment" class="comment">
   <form id="fcomment" action="../index=comment/" target="listcomment" method="post">
     {% csrf_token %}
-    <fieldset>
-    <div style="position:relative;left:10px;">
-      <legend>now status <span id="nowstatus" style="color:red;">{{otm4_0.OTid.status}}</span></br></legend>
-      <input type="radio" name="status" value="-1">-1
-      <input type="radio" name="status" value="0" checked="checked">0
-      <input type="radio" name="status" value="1">1
-      <input type="radio" name="status" value="2">2</br>
-      <span style="font-style:italic;"><b>*note*:</b>-1 False transient; 0 To be confirmed; 1 True transient; 2 Continue to be confirmed</span>
-    </div>
-    </fieldset>
     <textarea id="commentarea" name="commentarea" rows="5" cols="99"></textarea><br/>
-    <input type="submit" value="submit" style="position:relative;left:740px;">
+    <input type="submit" value="submit" style="position:relative;left:750px;">
   </form>
 </div>
 <div id="listcomment" class="listcomment">

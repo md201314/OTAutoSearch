@@ -2,7 +2,7 @@
 
 {%block content%}
 {%for o in otm5%}
-   {{o.datetime|date:"Y-m-d H:i:s"}}
-   <p>{{o.comment}}</p>
+   <b>{{o.uid.uname}}</b>: &nbsp;{{o.comment}}<br>
+   <span style="font-size:70%;position:absolute;left:60%;">status: <span style="color:red;">{{o.status}}</span></span><span style="font-size:70%;position:absolute;right:10%;">{{o.datetime|date:"Y-m-d H:i:s"}}</span>
 {%endfor%}
 {%endblock%}
